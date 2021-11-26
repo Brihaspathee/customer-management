@@ -1,0 +1,1 @@
+insert into customer (customer_id, customer_first_name, customer_last_name) values ('7b888bd8-f413-4788-9c03-3d5cb2a333a6', 'john', 'doe')

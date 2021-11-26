@@ -1,0 +1,34 @@
+version: '3.8'
+
+# Equivalent docker run command
+# docker container run -p 8080:8080
+# --mount type=volume,dst=/logs/local,src=logs,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=/Users/logs/customer
+# --net customer-net --name customer vbalaji215/customer-management:0.0.1-SNAPSHOT
+services:
+  customer:
+    image: vbalaji215/customer-management:0.0.1-SNAPSHOT
+    container_name: customer
+    networks:
+      - customer-net
+    volumes:
+      - customer-vol:/logs/local
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker:3306/customerdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: customerapp
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_PROFILES_ACTIVE: docker, clean
+
+volumes:
+  customer-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/logs/customer
+
+networks:
+  customer-net:
+    name: customer-net
+    driver: bridge
